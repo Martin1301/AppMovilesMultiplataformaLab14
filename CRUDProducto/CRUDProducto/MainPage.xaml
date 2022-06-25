@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CRUDProducto.MainPage"
+             xmlns:viewModel="clr-namespace:CRUDProducto.ViewModels"
+             Title="CRUD PRODUCTOS">
+    <ContentPage.BindingContext>
+        <viewModel:MainViewModel></viewModel:MainViewModel>
+    </ContentPage.BindingContext>
+
+    <StackLayout Padding="15">
+        <Frame BackgroundColor="#FC766A" CornerRadius="5">
+                <Label Text="CRUD PRODUCTOS" TextColor="White" FontSize="Title" HorizontalTextAlignment="Center" FontAttributes="Bold"></Label>
+         </Frame>
+
+        <Label>Nombre Producto:</Label>
+        <Entry Placeholder="Silla Gamer" Text="{Binding Nombre}"></Entry>
+        <Label>Précio Producto:</Label>
+        <Entry Placeholder="450" Text="{Binding Precio}"></Entry>
+        <Label>Fecha de pedido:</Label>
+        <DatePicker MinimumDate="1/1/2024" MaximumDate="1/1/2040" Format="dd-MM-yyyy" Date="{Binding Fecha}"></DatePicker>
+
+        <StackLayout Orientation="Horizontal">
+            <Label>Delivery:</Label>
+            <RadioButton Content="False"
+                             CheckedChanged="DeliveryYN" IsChecked="True"/>
+            <RadioButton Content="True"
+                             CheckedChanged="DeliveryYN"/>
+            <Entry x:Name="label" Text="{Binding Pedido}" IsVisible="false"></Entry>
+        </StackLayout>
+
+        <StackLayout Orientation="Horizontal">
+            <Button CornerRadius="100" Text="Agregar" BackgroundColor="#FC766A" FontAttributes="Bold" Command="{Binding InsertRowCommand}" TextColor="White"></Button>
+            <Button CornerRadius="100" Text="Limpiar lista" BackgroundColor="DarkRed" FontAttributes="Bold" Command="{Binding DeleteAllRowCommand}" TextColor="White"></Button>
+        </StackLayout>
+
+        <ListView ItemsSource="{Binding ListProducto}" HasUnevenRows="True" BackgroundColor="White">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Frame  CornerRadius="10" Margin="2" HorizontalOptions="FillAndExpand" BackgroundColor="#FBD9C6">
+
+                            <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                <Label Text="{Binding ProductoNombre}" TextColor="Black"></Label>
+                                <Label Text="{Binding ProductoPrecio}"></Label>
+                                <Label Text="{Binding ProductoFecha,StringFormat='{0:dd-MM-yyyy}'}"></Label>
+                                <Label Text="{Binding ProductoPedido}"></Label>
+
+                            </StackLayout>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="UpdateRow_Tapped" CommandParameter="{Binding .}"></TapGestureRecognizer>
+                                <SwipeGestureRecognizer Swiped="DeleteRow_Swiped" Direction="Right" CommandParameter="{Binding .}"></SwipeGestureRecognizer>
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+    </StackLayout>
+
+</ContentPage>
